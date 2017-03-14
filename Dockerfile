@@ -1,7 +1,8 @@
 FROM tagplus5/php:7-apache
 
-RUN apt-get update && apt-get -yqq --no-install-recommends -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install\
+RUN apt-get update && apt-get -yqq --no-install-recommends -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install \
  curl \
+ ntpate \
  wget \
  git \
  ant \
