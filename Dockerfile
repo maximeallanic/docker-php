@@ -17,7 +17,7 @@ RUN apt-get update && apt-get -yqq --no-install-recommends -o "Dpkg::Options::=-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN easy_install pip && pip install --upgrade awsebcli
 
-RUN a2enmod ssl
+RUN a2enmod ssl headers
 
 COPY apache/server.crt /etc/ssl/certs/server.crt
 
