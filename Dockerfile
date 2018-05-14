@@ -18,7 +18,8 @@ RUN apk add \
     php7-session \
     php7-simplexml \
     apache-ant \
-    openjdk8
+    openjdk8 \
+    git
 
 #ADD ./apache/default.conf /etc/apache2/conf.d/www.conf
 
