@@ -24,5 +24,6 @@ RUN apk add \
 
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf
 RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
+RUN sed -i 's/memory_limit = .*/memory_limit = '1024M'/' /etc/php7/php.ini
 
 WORKDIR /web/html
