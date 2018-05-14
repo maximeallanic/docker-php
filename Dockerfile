@@ -1,28 +1,28 @@
-FROM tagplus5/php:7-apache
+FROM nimmis/alpine-apache-php7:latest
 
-RUN apt-get update && apt-get -yqq --no-install-recommends -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install \
- curl \
- ntpdate \
- wget \
- git \
- ant \
- unzip \
- php7.0-xml \
- php7.0-intl \
- php7.0-pgsql \
- php7.0-mbstring \
- python \
- python-setuptools \
- && rm -rf /var/lib/apt/lists/*
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN easy_install pip && pip install --upgrade awsebcli
+RUN apk update
+RUN apk add \
+    php7-xml \
+    php7-intl \
+    php7-pgsql \
+    php7-mbstring \
+    php7-json \
+    php7-phar \
+    php7-dom \
+    php7-openssl \
+    php7-xmlwriter \
+    php7-tokenizer \
+    php7-pdo \
+    php7-pdo_pgsql \
+    php7-ctype \
+    php7-session \
+    php7-simplexml \
+    apache-ant \
+    openjdk8
 
-RUN a2enmod ssl headers
+#ADD ./apache/default.conf /etc/apache2/conf.d/www.conf
 
-COPY apache/server.crt /etc/ssl/certs/server.crt
+RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf
+RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
 
-COPY apache/server.key /etc/ssl/private/server.key
-
-RUN chmod 440 /etc/ssl/private/server.key
-
-COPY apache/default.conf /etc/apache2/sites-enabled/000-default.conf
+WORKDIR /web/html
