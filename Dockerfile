@@ -29,4 +29,7 @@ RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf
 RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
 RUN sed -i 's/memory_limit = .*/memory_limit = '2048M'/' /etc/php7/php.ini
 
+# Add env variable to apache2
+RUN sed -i 's/set -e/set -e\nsource \/etc\/envvars\n/' /etc/service/apache2/run
+
 WORKDIR /web/html
