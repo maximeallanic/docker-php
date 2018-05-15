@@ -12,6 +12,8 @@ RUN apk add \
     php7-openssl \
     php7-xmlwriter \
     php7-tokenizer \
+    php7-common \
+    php7-calendar \
     php7-pdo \
     php7-pdo_pgsql \
     php7-ctype \
@@ -25,6 +27,6 @@ RUN apk add \
 
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf
 RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
-RUN sed -i 's/memory_limit = .*/memory_limit = '1024M'/' /etc/php7/php.ini
+RUN sed -i 's/memory_limit = .*/memory_limit = '2048M'/' /etc/php7/php.ini
 
 WORKDIR /web/html
