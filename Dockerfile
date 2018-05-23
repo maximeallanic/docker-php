@@ -23,11 +23,13 @@ RUN apk add \
     openjdk8 \
     git
 
-#ADD ./apache/default.conf /etc/apache2/conf.d/www.conf
-
+# Define custom config for apache
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf
 RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
-RUN sed -i 's/memory_limit = .*/memory_limit = '2048M'/' /etc/php7/php.ini
+
+# Define custom config for php
+RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
+RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
 
 # Add env variable to apache2
 RUN sed -i 's/set -e/set -e\nsource \/etc\/envvars\n/' /etc/service/apache2/run
