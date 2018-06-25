@@ -19,6 +19,7 @@ RUN apk add \
     php7-ctype \
     php7-session \
     php7-simplexml \
+    php7-xdebug \
     apache-ant \
     openjdk8 \
     git
