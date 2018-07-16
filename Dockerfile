@@ -19,6 +19,8 @@ RUN apk add \
     php7-pdo_pgsql \
     php7-ctype \
     php7-session \
+    php7-iconv \
+    php7-posix \
     php7-simplexml \
     php7-xdebug \
     apache-ant \
