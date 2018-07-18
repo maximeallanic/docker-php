@@ -37,7 +37,6 @@ RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
 RUN sed -i 's/xdebug.coverage_enable = .*/xdebug.coverage_enable = 1/' /etc/php7/php.ini
 #RUN sed -i 's/xdebug.profiler_enable = .*/xdebug.profiler_enable = 1/' /etc/php7/php.ini
 RUN echo -e "zend_extension=xdebug.so \
-             xdebug.profiler_output_dir="/dev/shm/trace" \
              xdebug.profiler_append=On \
              xdebug.profiler_enable_trigger=On \
              xdebug.profiler_output_name="%R-%u.trace" \
