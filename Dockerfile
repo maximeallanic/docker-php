@@ -34,18 +34,17 @@ RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
 # Define custom config for php
 RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
 RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
-RUN sed -i 's/xdebug.coverage_enable = .*/xdebug.coverage_enable = 1/' /etc/php7/php.ini
-#RUN sed -i 's/xdebug.profiler_enable = .*/xdebug.profiler_enable = 1/' /etc/php7/php.ini
-RUN echo -e "zend_extension=xdebug.so \n\
-             xdebug.profiler_append=On \n\
-             xdebug.profiler_enable_trigger=On \n\
-             xdebug.profiler_output_name="%R-%u.trace" \n\
-             xdebug.trace_options=1 \n\
-             xdebug.collect_params=4 \n\
-             xdebug.collect_return=1 \n\
-             xdebug.collect_vars=0 \n\
-             xdebug.profiler_enable=0 \n\
-             xdebug.auto_trace=Off" > /etc/php7/conf.d/xdebug.ini
+#RUN echo -e "zend_extension=xdebug.so \n\
+#             xdebug.profiler_append=On \n\
+#             xdebug.profiler_enable_trigger=On \n\
+#             xdebug.profiler_output_name="%R-%u.trace" \n\
+#             xdebug.trace_options=1 \n\
+#             xdebug.collect_params=4 \n\
+#             xdebug.collect_return=1 \n\
+#             xdebug.collect_vars=0 \n\
+#             xdebug.profiler_enable=0 \n\
+#             xdebug.coverage_enable=1 \n\
+#             xdebug.auto_trace=Off" > /etc/php7/conf.d/xdebug.ini
 
 
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M" >> /etc/php7/conf.d/apcu.ini
