@@ -35,6 +35,9 @@ RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
 RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
 RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
 RUN sed -i 's/xdebug.coverage_enable = .*/xdebug.coverage_enable = 1/' /etc/php7/php.ini
+RUN sed -i 's/xdebug.profiler_enable = .*/xdebug.profiler_enable = 1/' /etc/php7/php.ini
+RUN sed -i 's/;zend_extension=xdebug.so/zend_extension=xdebug.so/' /etc/php7/conf.d/xdebug.ini
+
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M" >> /etc/php7/conf.d/apcu.ini
 
 # Add env variable to apache2
