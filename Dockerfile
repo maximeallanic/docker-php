@@ -2,7 +2,7 @@ FROM nimmis/alpine-apache-php7:latest
 
 RUN apk update
 RUN apk add \
-    php7-xml \
+    php7-xml=7.0.29 \
     php7-intl \
     php7-pgsql \
     php7-mbstring \
