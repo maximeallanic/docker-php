@@ -34,6 +34,8 @@ RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
 # Define custom config for php
 RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
 RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
+RUN sed -i 's/max_input_time = .*/max_input_time = -1/' /etc/php7/php.ini
+
 RUN echo -e "zend_extension=xdebug.so \n\
              xdebug.profiler_append=On \n\
              xdebug.profiler_enable_trigger=On \n\
