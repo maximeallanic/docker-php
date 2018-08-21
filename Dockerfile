@@ -48,8 +48,8 @@ RUN echo -e "zend_extension=xdebug.so \n\
              xdebug.show_mem_delta=1 \n\
              xdebug.profiler_enable=1 \n\
              xdebug.coverage_enable=1 \n\
-             xdebug.remote_enable = 1 \n\
-             xdebug.remote_autostart = 1 \n\
+             xdebug.remote_enable=1 \n\
+             xdebug.remote_autostart=1 \n\
              xdebug.auto_trace=Off" > /etc/php7/conf.d/xdebug.ini
 
 
