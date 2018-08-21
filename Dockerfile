@@ -41,7 +41,6 @@ RUN echo -e "zend_extension=xdebug.so \n\
              xdebug.profiler_append=On \n\
              xdebug.profiler_enable_trigger=On \n\
              xdebug.profiler_output_name="%R-%u.trace" \n\
-             xdebug.profiler_output_name="%R-%u.trace" \n\
              xdebug.trace_options=1 \n\
              xdebug.collect_params=4 \n\
              xdebug.collect_return=1 \n\
