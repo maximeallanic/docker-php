@@ -50,7 +50,8 @@ RUN echo -e "zend_extension=xdebug.so \n\
              xdebug.coverage_enable=1 \n\
              xdebug.remote_enable=1 \n\
              xdebug.remote_autostart=1 \n\
-             xdebug.auto_trace=Off" > /etc/php7/conf.d/xdebug.ini
+             xdebug.auto_trace=Off \n\
+             xdebug.remote_log=/var/log/xdebug.log" > /etc/php7/conf.d/xdebug.ini
 
 
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M" >> /etc/php7/conf.d/apcu.ini
