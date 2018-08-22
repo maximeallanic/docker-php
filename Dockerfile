@@ -24,6 +24,7 @@ RUN apk add \
     php7-simplexml \
     php7-xdebug \
     php7-opcache \
+    bind-tools \
     apache-ant \
     openjdk8 \
     git
@@ -37,28 +38,13 @@ RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
 RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
 RUN sed -i 's/max_input_time = .*/max_input_time = -1/' /etc/php7/php.ini
 RUN sed -i 's/realpath_cache_size = .*/realpath_cache_size = 4096k/' /etc/php7/php.ini
-
-RUN echo -e "zend_extension=xdebug.so \n\
-             xdebug.profiler_output_dir="/dev/shm/trace" \n\
-             xdebug.profiler_append=On \n\
-             xdebug.profiler_enable_trigger=On \n\
-             xdebug.profiler_output_name="%R-%u.trace" \n\
-             xdebug.trace_options=1 \n\
-             xdebug.collect_params=4 \n\
-             xdebug.collect_return=1 \n\
-             xdebug.collect_vars=0 \n\
-             xdebug.show_mem_delta=1 \n\
-             xdebug.profiler_enable=1 \n\
-             xdebug.coverage_enable=1 \n\
-             xdebug.remote_enable=1 \n\
-             xdebug.remote_autostart=1 \n\
-             xdebug.auto_trace=Off \n\
-             xdebug.remote_log=/var/log/xdebug.log" > /etc/php7/conf.d/xdebug.ini
-
-
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M" >> /etc/php7/conf.d/apcu.ini
 
-# Add env variable to apache2
-RUN sed -i 's/set -e/set -e\nsource \/etc\/envvars\n/' /etc/service/apache2/run
+COPY php/xdebug.ini /etc/php7/conf.d/xdebug.ini
+COPY apache/run /etc/service/apache2/run
+RUN chmod 777 /etc/service/apache2/run
+
+
+
 
 WORKDIR /web/html
