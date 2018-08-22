@@ -23,6 +23,7 @@ RUN apk add \
     php7-posix \
     php7-simplexml \
     php7-xdebug \
+    php7-opcache \
     apache-ant \
     openjdk8 \
     git
