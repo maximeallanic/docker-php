@@ -48,7 +48,7 @@ RUN chmod 777 /root/.profile
 
 RUN chmod 777 /etc/service/apache2/run
 
-ENTRYPOINT ["/bin/sh", "-lc"]
+ENTRYPOINT ["/bin/sh", "-l", "-c"]
 
 CMD ["/boot.sh"]
 
