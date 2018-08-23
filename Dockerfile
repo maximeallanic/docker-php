@@ -42,9 +42,14 @@ RUN echo -e "\napc.enabled=1\napc.shm_size=64M" >> /etc/php7/conf.d/apcu.ini
 
 COPY php/xdebug.ini /etc/php7/conf.d/xdebug.ini
 COPY apache/run /etc/service/apache2/run
+COPY apache/profile /root/.profile
+
+RUN chmod 777 /root/.profile
+
 RUN chmod 777 /etc/service/apache2/run
 
+ENTRYPOINT ["/bin/sh", "-lc"]
 
-
+CMD ["/boot.sh"]
 
 WORKDIR /web/html
