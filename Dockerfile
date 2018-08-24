@@ -40,7 +40,7 @@ RUN sed -i 's/max_input_time = .*/max_input_time = -1/' /etc/php7/php.ini
 RUN sed -i 's/realpath_cache_size = .*/realpath_cache_size = 4096k/' /etc/php7/php.ini
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M" >> /etc/php7/conf.d/apcu.ini
 
-COPY php/xdebug.ini /etc/php7/conf.d/xdebug.ini
+COPY php/xdebug.ini /etc/php7/conf.d/xdebug.ini.disabled
 COPY apache/run /etc/service/apache2/run
 COPY apache/profile /root/.profile
 

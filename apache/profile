@@ -9,4 +9,10 @@ if [ ! -z "$XDEBUG_IDE_KEY" ]; then
       fi
       export XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000 remote_host=${DOCKER_HOST} remote_connect_back=0 idekey=${XDEBUG_IDE_KEY}";
       export XDEBUG_REMOTE_HOST="${DOCKER_HOST}";
+
+      if [ -f /etc/php7/conf.d/xdebug.ini.disabled ]; then
+        mv /etc/php7/conf.d/xdebug.ini.disabled /etc/php7/conf.d/xdebug.ini
+      fi
+elif [ -f /etc/php7/conf.d/xdebug.ini ]; then
+  mv /etc/php7/conf.d/xdebug.ini /etc/php7/conf.d/xdebug.ini.disabled
 fi
