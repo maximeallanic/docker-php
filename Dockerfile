@@ -16,6 +16,7 @@ RUN apk add \
     php7-common \
     php7-calendar \
     php7-pdo \
+    php7-fileinfo \
     php7-pdo_pgsql \
     php7-ctype \
     php7-session \
