@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+source /etc/envvars
+
+export LANG=C
+export LANG
+
+if [ -f /etc/nginx/fastcgi_params_env ]; then
+    rm /etc/nginx/fastcgi_params_env
+fi
+unset PS1
+for ENV in $(env); do
+  set -- `echo $ENV | tr '=' ' '`
+  if [[ $2 != *\$* ]];then
+    echo "fastcgi_param $1 $2;"  >> /etc/nginx/fastcgi_params_env
+  fi
+done
+
+/usr/sbin/nginx -c /etc/nginx/nginx.conf  -g "daemon off;"

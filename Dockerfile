@@ -1,7 +1,8 @@
-FROM nimmis/alpine-apache-php7:latest
+FROM nimmis/alpine-micro:latest
 
 RUN apk update
 RUN apk add \
+    nginx \
     curl \
     php7-xml \
     php7-intl \
@@ -12,6 +13,7 @@ RUN apk add \
     php7-apcu \
     php7-dom \
     php7-openssl \
+    php7-fpm \
     php7-xmlwriter \
     php7-tokenizer \
     php7-common \
@@ -31,9 +33,22 @@ RUN apk add \
     openjdk8 \
     git
 
+
+# Install composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+RUN php composer-setup.php
+RUN php -r "unlink('composer-setup.php');"
+RUN mv composer.phar /usr/local/bin/composer
+
 # Define custom config for apache
-RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf
-RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
+#RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf
+#RUN sed -i '/\/web\/html/s//\/web\/html\/web/g' /etc/apache2/httpd.conf
+COPY conf/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN rm /etc/nginx/conf.d/default.conf
+RUN mkdir /etc/service/nginx
+COPY conf/nginx/run /etc/service/nginx/run
+RUN chmod 777 /etc/service/nginx/run
 
 # Define custom config for php
 RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
@@ -41,14 +56,21 @@ RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
 RUN sed -i 's/max_input_time = .*/max_input_time = -1/' /etc/php7/php.ini
 RUN sed -i 's/realpath_cache_size = .*/realpath_cache_size = 4096k/' /etc/php7/php.ini
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M\napc.enable_cli=1" >> /etc/php7/conf.d/apcu.ini
+COPY conf/php-fpm/xdebug.ini /etc/php7/conf.d/xdebug.ini.disabled
+COPY conf/php-fpm/*.conf /etc/php7/php-fpm.d/
+RUN mkdir /etc/service/php-fpm
+COPY conf/php-fpm/run /etc/service/php-fpm/run
+RUN chmod 777 /etc/service/php-fpm/run
 
-COPY php/xdebug.ini /etc/php7/conf.d/xdebug.ini.disabled
-COPY apache/run /etc/service/apache2/run
-COPY apache/profile /root/.profile
-
+COPY conf/profile /root/.profile
 RUN chmod 777 /root/.profile
 
-RUN chmod 777 /etc/service/apache2/run
+RUN mkdir -p /run/nginx
+RUN mkdir -p /web/logs
+RUN mkdir -p /web/run
+RUN chmod -R 777 /run
+RUN chmod -R 777 /web
+RUN chmod -R 777 /var/log
 
 ENTRYPOINT ["/bin/sh", "-l", "-c"]
 
