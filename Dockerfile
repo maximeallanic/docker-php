@@ -35,10 +35,7 @@ RUN apk add \
 
 
 # Install composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
+RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
 # Define custom config for apache
@@ -54,8 +51,10 @@ RUN chmod 777 /etc/service/nginx/run
 RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
 RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
 RUN sed -i 's/max_input_time = .*/max_input_time = -1/' /etc/php7/php.ini
-RUN sed -i 's/realpath_cache_size = .*/realpath_cache_size = 4096k/' /etc/php7/php.ini
+#RUN sed -i 's/realpath_cache_size = .*/realpath_cache_size = 4096k/' /etc/php7/php.ini
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M\napc.enable_cli=1" >> /etc/php7/conf.d/apcu.ini
+RUN echo -e '\ndate.timezone = Europe/Paris\nshort_open_tag = Off\nlog_errors = On\nerror_reporting = E_ALL\ndisplay_errors = On\nerror_log = /proc/self/fd/2\nmemory_limit = 256M\nopcache.max_accelerated_files = 20000\nrealpath_cache_size = 4096K\nrealpath_cache_ttl = 600' >> /etc/php7/php.ini
+
 COPY conf/php-fpm/xdebug.ini /etc/php7/conf.d/xdebug.ini.disabled
 COPY conf/php-fpm/*.conf /etc/php7/php-fpm.d/
 RUN mkdir /etc/service/php-fpm
@@ -68,6 +67,7 @@ RUN chmod 777 /root/.profile
 RUN mkdir -p /run/nginx
 RUN mkdir -p /web/logs
 RUN mkdir -p /web/run
+RUN mkdir -p /dev/shm/cache
 RUN chmod -R 777 /run
 RUN chmod -R 777 /web
 RUN chmod -R 777 /var/log
