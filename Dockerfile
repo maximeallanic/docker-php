@@ -28,6 +28,7 @@ RUN apk add \
     php7-simplexml \
     php7-xdebug \
     php7-opcache \
+    php7-zip \
     bind-tools \
     apache-ant \
     openjdk8 \
