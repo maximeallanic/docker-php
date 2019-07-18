@@ -29,6 +29,7 @@ RUN apk add \
     php7-xdebug \
     php7-opcache \
     php7-zip \
+    php7-pcntl \
     bind-tools \
     apache-ant \
     openjdk8 \
@@ -52,7 +53,8 @@ RUN chmod 777 /etc/service/nginx/run
 RUN sed -i 's/memory_limit = .*/memory_limit = -1/' /etc/php7/php.ini
 RUN sed -i 's/max_execution_time = .*/max_execution_time = 0/' /etc/php7/php.ini
 RUN sed -i 's/max_input_time = .*/max_input_time = -1/' /etc/php7/php.ini
-#RUN sed -i 's/realpath_cache_size = .*/realpath_cache_size = 4096k/' /etc/php7/php.ini
+RUN sed -i 's/realpath_cache_size = .*/realpath_cache_size = 20M/' /etc/php7/php.ini
+RUN sed -i 's/realpath_cache_ttl = .*/realpath_cache_ttl = 7200/' /etc/php7/php.ini
 RUN echo -e "\napc.enabled=1\napc.shm_size=64M\napc.enable_cli=1" >> /etc/php7/conf.d/apcu.ini
 RUN echo -e '\nshort_open_tag = Off\nlog_errors = On\nerror_reporting = E_ALL\ndisplay_errors = On\nerror_log = /proc/self/fd/2\nopcache.max_accelerated_files = 20000\nrealpath_cache_size = 4096K\nrealpath_cache_ttl = 600' >> /etc/php7/php.ini
 
