@@ -3,16 +3,29 @@
 if [ ! -z "$XDEBUG_IDE_KEY" ]; then
       # Enable Xdebug by env variables :
       if [ "$(dig docker.for.mac.localhost | grep 'ANSWER SECTION' | wc -l)" -eq 1 ]; then
-        DOCKER_HOST=$( dig +short docker.for.mac.localhost)
+        DOCKER_HOST=$(dig +short docker.for.mac.localhost)
       else
         DOCKER_HOST=$(ip addr | grep eth0 | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' | head -n 1)".1";
       fi
-      export XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000 remote_host=${DOCKER_HOST} remote_connect_back=0 idekey=${XDEBUG_IDE_KEY}";
-      export XDEBUG_REMOTE_HOST="${DOCKER_HOST}";
 
       if [ -f /etc/php7/conf.d/xdebug.ini.disabled ]; then
         mv /etc/php7/conf.d/xdebug.ini.disabled /etc/php7/conf.d/xdebug.ini
       fi
+
+      export XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000 remote_host=${DOCKER_HOST} remote_connect_back=0 idekey=${XDEBUG_IDE_KEY}";
+      export XDEBUG_REMOTE_HOST="${DOCKER_HOST}";
+      echo "XDEBUG_CONFIG=\"$XDEBUG_CONFIG\"" >> /etc/envvars
+      echo "XDEBUG_REMOTE_HOST=\"$XDEBUG_REMOTE_HOST\"" >> /etc/envvars
+      echo "xdebug.remote_host=${DOCKER_HOST}" >> /etc/php7/conf.d/00_xdebug.ini
+      echo "xdebug.idekey=${XDEBUG_IDE_KEY}" >> /etc/php7/conf.d/xdebug.ini
 elif [ -f /etc/php7/conf.d/xdebug.ini ]; then
   mv /etc/php7/conf.d/xdebug.ini /etc/php7/conf.d/xdebug.ini.disabled
+fi
+
+if [ ! -z "$BLACKFIRE_SERVER_ID" ]; then
+  sed "s/BLACKFIRE_SERVER_ID/$BLACKFIRE_SERVER_ID/g" /etc/php7/conf.d/01_blackfire.ini.disabled > /etc/php7/conf.d/01_blackfire.ini.tmp
+  sed "s/BLACKFIRE_SERVER_TOKEN/$BLACKFIRE_SERVER_TOKEN/g" /etc/php7/conf.d/01_blackfire.ini.tmp > /etc/php7/conf.d/01_blackfire.ini
+
+  sed "s/BLACKFIRE_SERVER_ID/$BLACKFIRE_SERVER_ID/g" /etc/blackfire/agent > /etc/blackfire/agent.tmp
+  sed "s/BLACKFIRE_SERVER_TOKEN/$BLACKFIRE_SERVER_TOKEN/g" /etc/blackfire/agent.tmp > /etc/blackfire/agent
 fi

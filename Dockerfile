@@ -33,7 +33,9 @@ RUN apk add \
     bind-tools \
     apache-ant \
     openjdk8 \
-    git
+    git \
+    libc6-compat \
+    gcompat
 
 
 # Install composer
@@ -64,11 +66,32 @@ RUN echo -e '\nshort_open_tag = Off\n \
             realpath_cache_size = 4M\n \
             realpath_cache_ttl = 7200' >> /etc/php7/php.ini
 
+RUN echo -e '[blackfire]\n\
+    extension=blackfire.so\n\
+    blackfire.agent_socket = unix:///var/run/blackfire/agent.sock\n\
+    blackfire.agent_timeout = 0.25\n\
+    blackfire.log_level = 4\n\
+    blackfire.log_file = /tmp/blackfire.log\n\
+    blackfire.server_id = BLACKFIRE_SERVER_ID\n\
+    blackfire.server_token = BLACKFIRE_SERVER_TOKEN' >> /etc/php7/conf.d/01_blackfire.ini.disabled
+
 COPY conf/php-fpm/xdebug.ini /etc/php7/conf.d/xdebug.ini.disabled
 COPY conf/php-fpm/*.conf /etc/php7/php-fpm.d/
 RUN mkdir /etc/service/php-fpm
 COPY conf/php-fpm/run /etc/service/php-fpm/run
 RUN chmod 777 /etc/service/php-fpm/run
+
+RUN wget https://packages.blackfire.io/binaries/blackfire-agent/1.27.0/blackfire-agent-linux_static_amd64 -O /usr/local/bin/blackfire-agent
+RUN chmod 777 /usr/local/bin/blackfire-agent
+COPY conf/black-fire/config.conf /etc/blackfire/agent
+RUN mkdir /etc/service/black-fire
+COPY conf/black-fire/run /etc/service/black-fire/run
+RUN chmod 777 /etc/service/black-fire/run
+RUN mkdir -p /usr/lib/php7/modules
+RUN wget https://packages.blackfire.io/binaries/blackfire-php/1.26.3/blackfire-php-alpine_amd64-php-72.so -O /usr/lib/php7/modules/blackfire.so
+RUN chmod 755 /usr/lib/php7/modules/blackfire.so
+RUN mkdir /var/run/blackfire/
+
 
 COPY conf/profile /root/.profile
 RUN chmod 777 /root/.profile

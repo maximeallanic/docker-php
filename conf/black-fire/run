@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# Copyright 2019 Allanic.me ISC License License
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+# Created by mallanic <maxime@allanic.me> at 18/07/2019
+
+#!/bin/sh
+
+set -e
+source /etc/envvars
+
+export LANG=C
+export LANG
+
+if [ -f /etc/php7/conf.d/01_blackfire.ini ]; then
+    /usr/local/bin/blackfire-agent
+fi
