@@ -28,6 +28,7 @@ RUN apk add \
     php7-simplexml \
     php7-xdebug \
     php7-apcu \
+    php7-curl \
     php7-zip \
     php7-pcntl \
     bind-tools \
