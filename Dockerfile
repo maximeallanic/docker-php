@@ -4,33 +4,33 @@ RUN apk update
 RUN apk add \
     nginx \
     curl \
-    php7-xml \
-    php7-intl \
-    php7-pgsql \
-    php7-mbstring \
-    php7-json \
-    php7-phar \
-    php7-apcu \
-    php7-dom \
-    php7-openssl \
-    php7-fpm \
-    php7-xmlwriter \
-    php7-tokenizer \
-    php7-common \
-    php7-calendar \
-    php7-pdo \
-    php7-fileinfo \
-    php7-pdo_pgsql \
-    php7-ctype \
-    php7-session \
-    php7-iconv \
-    php7-posix \
-    php7-simplexml \
-    php7-xdebug \
-    php7-apcu \
-    php7-curl \
-    php7-zip \
-    php7-pcntl \
+    php7-xml=~7.1 \
+    php7-intl=~7.1 \
+    php7-pgsql=~7.1 \
+    php7-mbstring=~7.1 \
+    php7-json=~7.1 \
+    php7-phar=~7.1 \
+    php7-apcu=~7.1 \
+    php7-dom=~7.1 \
+    php7-openssl=~7.1 \
+    php7-fpm=~7.1 \
+    php7-xmlwriter=~7.1 \
+    php7-tokenizer=~7.1 \
+    php7-common=~7.1 \
+    php7-calendar=~7.1 \
+    php7-pdo=~7.1 \
+    php7-fileinfo=~7.1 \
+    php7-pdo_pgsql=~7.1 \
+    php7-ctype=~7.1 \
+    php7-session=~7.1 \
+    php7-iconv=~7.1 \
+    php7-posix=~7.1 \
+    php7-simplexml=~7.1 \
+    php7-xdebug=~7.1 \
+    php7-apcu=~7.1 \
+    php7-curl=~7.1 \
+    php7-zip=~7.1 \
+    php7-pcntl=~7.1 \
     bind-tools \
     apache-ant \
     openjdk8 \
